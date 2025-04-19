@@ -1,103 +1,105 @@
-import Image from "next/image";
+// src/app/page.tsx
+import ProductCard from "@/components/ProductCard"
+import Section from "@/components/Section"
+import { products } from "@/data/products"
+import Image from "next/image"
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+    <main>
+      {/* HERO + AGE‑GATE has already run; this is just the prompt section */}
+      <section
+        id="hero"
+        className="min-h-screen flex flex-col items-center justify-center bg-black text-chrome px-4 space-y-6"
+      >
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
+          src="/VapeAuraSymbol.png"
+          alt="VapeAura symbol"
+          width={128}
+          height={128}
+          className="w-32 h-auto mb-4"
           priority
         />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
+        <h1 className="text-5xl md:text-6xl font-black tracking-tight text-center">
+          VapeAura – VIP Vapes & Glass
+        </h1>
+
+        <p className="text-lg max-w-2xl text-center">
+          Curated smoke essentials — every visitor treated like a VIP.
+        </p>
+
+        <p className="text-center max-w-xl">
+          Call/Text 
+          <a href="tel:+15551234567" className="underline">
+            +1 (555) 123‑4567
           </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
+          {" • "}Email 
+          <a href="mailto:info@vapeaura.com" className="underline">
+            info@vapeaura.com
           </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
+          <br />
+          Don’t see what you want in stock? Drop us a line — we can source
+          almost anything.
+        </p>
+
+        <p className="italic max-w-lg text-center text-chrome-dark">
+          <span className="font-semibold">Price‑Match Guarantee:</span> We’ll
+          beat or match Xhale, Cloud9 & other major chains — without
+          sacrificing quality.
+        </p>
+
         <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="#products"
+          className="mt-6 inline-block rounded bg-chrome text-black px-8 py-3 font-semibold hover:bg-chrome/90 transition"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
+          Browse Products
         </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+      </section>
+
+      {/* MAIN CONTENT */}
+      <div className="mx-auto max-w-6xl px-4 py-14 space-y-20">
+        {/* PRODUCTS */}
+        <Section title="Featured Products">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {products.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </Section>
+
+        {/* PRICE‑MATCH */}
+        <Section title="Price Match Guarantee">
+          <p>
+            We’ll beat or match any price from Xhale, Cloud9, and other major
+            chains — without sacrificing quality. Just send us the link!
+          </p>
+        </Section>
+
+        {/* CUSTOM ORDERS */}
+        <Section title="Don’t see what you need?">
+          <p>
+            Text, call, or email us — we can source nearly any product on
+            request.
+          </p>
+        </Section>
+
+        {/* CONTACT */}
+        <Section title="Contact">
+          <p>
+            <strong>Phone:</strong>{" "}
+            <a className="hover:underline" href="tel:+15551234567">
+              +1 (555) 123‑4567
+            </a>
+          </p>
+          <p>
+            <strong>Email:</strong>{" "}
+            <a className="hover:underline" href="mailto:info@vapeaura.com">
+              info@vapeaura.com
+            </a>
+          </p>
+        </Section>
+      </div>
+    </main>
+  )
 }

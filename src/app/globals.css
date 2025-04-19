@@ -1,26 +1,52 @@
-@import "tailwindcss";
+/* src/app/globals.css */
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ──────────────────────────────────────────────────────────
+   Fonts
+────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ──────────────────────────────────────────────────────────
+   Tailwind layers
+────────────────────────────────────────────────────────── */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ──────────────────────────────────────────────────────────
+   Base resets & theme
+────────────────────────────────────────────────────────── */
+@layer base {
+  /* apply your custom font, smooth antialiasing, and core colors */
+  html,
+  body {
+    font-family: 'Poppins', sans-serif;
+    @apply bg-deepsea text-chrome antialiased;
+  }
+
+  /* a subtle overlay texture if you ever want it */
+  body::before {
+    content: "";
+    @apply fixed inset-0 pointer-events-none opacity-10 bg-gradient-to-br from-deepsea to-chrome;
+    mix-blend-mode: overlay;
+    z-index: 50;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ──────────────────────────────────────────────────────────
+   Example component utility
+────────────────────────────────────────────────────────── */
+@layer components {
+  .card-glow {
+    @apply p-6 rounded-2xl bg-deepsea-light/20 backdrop-blur-md shadow-lg;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────
+   Example custom utility
+────────────────────────────────────────────────────────── */
+@layer utilities {
+  .vape-smoke {
+    mask-image: radial-gradient(circle at 50% 50%, white, transparent);
+    background: linear-gradient(135deg, chrome, deepsea);
+  }
 }
