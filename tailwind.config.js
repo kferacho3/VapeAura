@@ -1,29 +1,36 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: 'class',
+  darkMode: "class",
   content: [
-    './src/**/*.{js,ts,jsx,tsx,mdx}',
-    './public/**/*.html',
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "./public/**/*.html",
   ],
   theme: {
     extend: {
       colors: {
-        chrome: {
-          DEFAULT: '#C7CED6',    // soft chrome silver
-          dark:    '#A9B1BA',    // muted chrome
+        /* metallic accent */
+        steam: {
+          DEFAULT: "#E0E6ED",
+          faint:   "#B8C0C8",
         },
-        deepsea: {
-          DEFAULT: '#004F63',    // deep‑sea blue
-          light:   '#006D77',    // bright‑sea accent
+        /* deep‑sea / space vibe */
+        neptune: {
+          DEFAULT: "#113B6E",   // core Neptune blue
+          light:   "#1C4C8B",   // lighter accent
         },
+        midnight: "#000000",     // pure black
       },
+      fontFamily: {
+        barlow: ['Barlow', 'sans-serif'], // Or Barlow Condensed, depending on your needs
+      },
+
     },
   },
   safelist: [
-    'bg-deepsea',
-    'bg-deepsea-light',
-    'text-chrome',
-    'text-chrome-dark',
+    "bg-neptune",
+    "bg-neptune-light",
+    "text-steam",
+    "text-steam-faint",
   ],
   plugins: [],
-}
+};

@@ -9,20 +9,19 @@ const LOCAL_KEY = "vapeaura_verified";
 
 export default function AgeGate({ children }: { children: React.ReactNode }) {
   const [verified, setVerified] = useState<boolean>(
-    () => typeof window !== "undefined" && localStorage.getItem(LOCAL_KEY) === "true",
+    () => typeof window !== "undefined" && localStorage.getItem(LOCAL_KEY) === "true"
   );
   const [stage, setStage] = useState<"logo" | "form">("logo");
   const [birth, setBirth] = useState<string>("");
 
-  /* ---------- logo → form transition ---------- */
+  // show logo briefly, then slide in form
   useEffect(() => {
     if (!verified && stage === "logo") {
-      const t = setTimeout(() => setStage("form"), 1900); // after fade‑in/out
-      return () => clearTimeout(t);
+      const timer = setTimeout(() => setStage("form"), 1800);
+      return () => clearTimeout(timer);
     }
   }, [verified, stage]);
 
-  /* ---------- helpers ---------- */
   const calcAge = (d: string) =>
     Math.floor((Date.now() - new Date(d).getTime()) / (1000 * 60 * 60 * 24 * 365.25));
 
@@ -33,11 +32,10 @@ export default function AgeGate({ children }: { children: React.ReactNode }) {
       localStorage.setItem(LOCAL_KEY, "true");
       setVerified(true);
     } else {
-      alert("Sorry, you must be 21 or older.");
+      alert("Sorry, you must be 21 or older to enter.");
     }
   };
 
-  /* ---------- RENDER ---------- */
   if (verified) return <>{children}</>;
 
   return (
@@ -45,17 +43,18 @@ export default function AgeGate({ children }: { children: React.ReactNode }) {
       {stage === "logo" && (
         <motion.div
           key="logo"
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0.7 }}
           animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.9, ease: "easeOut" }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-charcoal"
+          exit={{ opacity: 0, scale: 0.7 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
         >
           <Image
             src={VapeAuraLogo}
-            alt="VapeAura logo"
-            priority
-            className="w-48 h-auto select-none pointer-events-none"
+            alt="VapeAura Logo"
+            width={96}
+            height={96}
+            className="select-none pointer-events-none"
           />
         </motion.div>
       )}
@@ -63,33 +62,51 @@ export default function AgeGate({ children }: { children: React.ReactNode }) {
       {stage === "form" && (
         <motion.div
           key="form"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-charcoal space-y-6 px-4 text-silver-light"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 50 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 px-4"
         >
-          <h2 className="text-2xl font-semibold text-center">
-            Are you 21&nbsp;years of age or older?
-          </h2>
+          <div className="bg-charcoal rounded-2xl p-8 max-w-sm w-full text-silver-light shadow-2xl ring-1 ring-silver-light/20 space-y-6">
+            <div className="flex justify-center">
+              <Image
+                src={VapeAuraLogo}
+                alt="VapeAura Symbol"
+                width={64}
+                height={64}
+              />
+            </div>
+            <h2 className="text-2xl font-semibold text-center">
+              Welcome to VapeAura
+            </h2>
+            <p className="text-center text-sm">
+              You must be <strong>21 years or older</strong> to enter this site.
+              Please provide your date of birth below to continue.
+            </p>
 
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col gap-4 w-full max-w-xs text-charcoal"
-          >
-            <input
-              required
-              type="date"
-              value={birth}
-              onChange={(e) => setBirth(e.target.value)}
-              className="rounded p-3 w-full"
-              max={new Date().toISOString().split("T")[0]}
-            />
-            <button
-              type="submit"
-              className="rounded bg-silver-light py-2 font-bold hover:bg-silver-light/80 transition"
-            >
-              Enter Site
-            </button>
-          </form>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <input
+                type="date"
+                value={birth}
+                onChange={(e) => setBirth(e.target.value)}
+                max={new Date().toISOString().split("T")[0]}
+                required
+                className="w-full rounded-lg bg-black/50 p-3 placeholder-silver-light focus:outline-none focus:ring-2 focus:ring-neptune-light"
+              />
+              <button
+                type="submit"
+                className="w-full rounded-lg bg-neptune py-3 font-semibold text-black hover:bg-neptune-light transition"
+              >
+                ENTER
+              </button>
+            </form>
+
+            <p className="text-center text-xs text-steam/60">
+              By entering, you confirm you are of legal age. We respect your privacy
+              and will never store your personal data beyond this session.
+            </p>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

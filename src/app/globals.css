@@ -1,52 +1,317 @@
-/* src/app/globals.css */
+/* globals.css */
 
-/* ──────────────────────────────────────────────────────────
-   Fonts
-────────────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+/* ---------- fonts ---------- */
+@font-face {
+  font-family: "Proxima Nova";
+  src: url("/fonts/proximanova_light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Proxima Nova";
+  src: url("/fonts/proximanova_bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Proxima Nova";
+  src: url("/fonts/proximanova_extrabold.otf") format("opentype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Proxima Nova";
+  src: url("/fonts/proximanova_black.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
 
-/* ──────────────────────────────────────────────────────────
-   Tailwind layers
-────────────────────────────────────────────────────────── */
+/* ---------- tailwind ---------- */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ──────────────────────────────────────────────────────────
-   Base resets & theme
-────────────────────────────────────────────────────────── */
+/* ---------- base styles ---------- */
 @layer base {
-  /* apply your custom font, smooth antialiasing, and core colors */
   html,
   body {
-    font-family: 'Poppins', sans-serif;
-    @apply bg-deepsea text-chrome antialiased;
+    font-family: "Proxima Nova", sans-serif;
+    @apply text-steam antialiased;
+    background: linear-gradient(
+        ellipse at top left,
+        theme("colors.midnight") 0%,
+        theme("colors.midnight") 60%,
+        theme("colors.neptune.DEFAULT") 120%
+      )
+      fixed;
   }
 
-  /* a subtle overlay texture if you ever want it */
   body::before {
     content: "";
-    @apply fixed inset-0 pointer-events-none opacity-10 bg-gradient-to-br from-deepsea to-chrome;
+    @apply fixed inset-0 pointer-events-none opacity-20;
+    background: repeating-linear-gradient(
+      circle at 50% 50%,
+      transparent 0 4px,
+      theme("colors.neptune.light") 4px 8px
+    );
     mix-blend-mode: overlay;
     z-index: 50;
   }
+
+  a {
+    @apply text-neptune-light hover:text-steam transition;
+  }
 }
 
-/* ──────────────────────────────────────────────────────────
-   Example component utility
-────────────────────────────────────────────────────────── */
+/* ---------- component helpers ---------- */
 @layer components {
   .card-glow {
-    @apply p-6 rounded-2xl bg-deepsea-light/20 backdrop-blur-md shadow-lg;
+    @apply p-6 rounded-2xl bg-neptune/10 backdrop-blur-md shadow-lg;
+  }
+
+  .banner-track {
+    animation: banner-slide 30s linear infinite;
   }
 }
 
-/* ──────────────────────────────────────────────────────────
-   Example custom utility
-────────────────────────────────────────────────────────── */
-@layer utilities {
-  .vape-smoke {
-    mask-image: radial-gradient(circle at 50% 50%, white, transparent);
-    background: linear-gradient(135deg, chrome, deepsea);
+/* ---------- banner animation ---------- */
+@keyframes banner-slide {
+  0% {
+    transform: translateX(0);
   }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- smoke animation ---------- */
+.smoke-container {
+  position: relative;
+  display: inline-block;
+}
+.smoke-wrap {
+  position: absolute;
+  left: 50%;
+  top: 0%;
+  transform: translate(-50%, -10%);
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: flex-end;
+  pointer-events: none;
+  z-index: 0;
+}
+.smoke,
+.smoke2,
+.smoke3 {
+  width: 200px;
+  height: 40px;
+  filter: blur(4px);
+  transform-origin: bottom center;
+  opacity: 0;
+}
+.smoke {
+  transform: rotate(-45deg);
+  animation: smoke1 4s ease-in-out infinite 0.3s;
+}
+.smoke2 {
+  transform: rotate(0deg);
+  animation: smoke2 4s ease-in-out infinite 1.3s;
+}
+.smoke3 {
+  transform: rotate(45deg);
+  animation: smoke3 5s ease-in-out infinite 2.3s;
+}
+
+@keyframes smoke1 {
+  0% {
+    opacity: 0;
+    transform: rotate(-45deg) translateY(0) scale(1);
+    filter: blur(0);
+  }
+  30% {
+    opacity: 0.7;
+    transform: rotate(-45deg) translateY(-15%) scale(1.05);
+    filter: blur(3px);
+  }
+  60% {
+    opacity: 1;
+    transform: rotate(-45deg) translateY(-30%) scale(1.1);
+    filter: blur(4px);
+  }
+  80% {
+    opacity: 0.8;
+    transform: rotate(-45deg) translateY(-40%) scale(1.15);
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(-45deg) translateY(-50%) scale(1.2);
+    filter: blur(6px);
+  }
+}
+@keyframes smoke2 {
+  0% {
+    opacity: 0;
+    transform: rotate(0deg) translateY(0) scale(1);
+    filter: blur(0);
+  }
+  30% {
+    opacity: 0.7;
+    transform: rotate(0deg) translateY(-15%) scale(1.05);
+    filter: blur(3px);
+  }
+  60% {
+    opacity: 1;
+    transform: rotate(0deg) translateY(-30%) scale(1.1);
+    filter: blur(4px);
+  }
+  80% {
+    opacity: 0.8;
+    transform: rotate(0deg) translateY(-40%) scale(1.15);
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(0deg) translateY(-50%) scale(1.2);
+    filter: blur(6px);
+  }
+}
+@keyframes smoke3 {
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translateY(0) scale(1);
+    filter: blur(0);
+  }
+  30% {
+    opacity: 0.7;
+    transform: rotate(45deg) translateY(-15%) scale(1.05);
+    filter: blur(3px);
+  }
+  60% {
+    opacity: 1;
+    transform: rotate(45deg) translateY(-30%) scale(1.1);
+    filter: blur(4px);
+  }
+  80% {
+    opacity: 0.8;
+    transform: rotate(45deg) translateY(-40%) scale(1.15);
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translateY(-50%) scale(1.2);
+    filter: blur(6px);
+  }
+}
+
+/* ---------- interactive card styles ---------- */
+:root {
+  --step: 5%;
+
+  --rainbow: repeating-linear-gradient(
+      0deg,
+      rgb(255, 119, 115) calc(var(--step) * 1),
+      rgba(255, 237, 95, 1) calc(var(--step) * 2),
+      rgba(168, 255, 95, 1) calc(var(--step) * 3),
+      rgba(131, 255, 247, 1) calc(var(--step) * 4),
+      rgba(120, 148, 255, 1) calc(var(--step) * 5),
+      rgb(216, 117, 255) calc(var(--step) * 6),
+      rgb(255, 119, 115) calc(var(--step) * 7)
+    )
+    0% var(--bg-y) / 200% 700%;
+  --diagonal: repeating-linear-gradient(
+      128deg,
+      #0e152e 0%,
+      hsl(180, 10%, 60%) 3.8%,
+      hsl(180, 10%, 60%) 4.5%,
+      hsl(180, 10%, 60%) 5.2%,
+      #0e152e 10%,
+      #0e152e 12%
+    )
+    var(--bg-x) var(--bg-y) / 300%;
+  --shade: radial-gradient(
+      farthest-corner circle at var(--x) var(--y),
+      rgba(255, 255, 255, 0.1) 12%,
+      rgba(255, 255, 255, 0.15) 20%,
+      rgba(255, 255, 255, 0.25) 120%
+    )
+    var(--bg-x) var(--bg-y) / 300%;
+  --r-x: 0deg;
+  --r-y: 0deg;
+  --x: 50%;
+  --y: 50%;
+  --bg-x: 0%;
+  --bg-y: 0%;
+}
+
+.card {
+  width: 100%;
+  height: 200px;
+  max-width: 380px;
+  margin: 0 auto;
+  position: relative;
+  box-sizing: border-box;
+}
+.card__wrapper {
+  perspective: 600px;
+  position: absolute;
+  inset: 0;
+}
+.card__3d {
+  transform: rotateY(var(--r-x)) rotateX(var(--r-y));
+  position: absolute;
+  inset: 0;
+  transition: transform 0.2s ease-out;
+  clip-path: inset(0 0 0 0 round 32px);
+}
+.card__image {
+  clip-path: inset(0 0 0 0 round 32px);
+}
+.card__image img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* soft light */
+.card__layer1 {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+  clip-path: inset(0 0 1px 0 round 32px);
+  background: radial-gradient(
+      farthest-corner circle at var(--x) var(--y),
+      rgba(255, 255, 255, 0.2) 10%,
+      rgba(255, 255, 255, 0.25) 100%,
+      rgba(255, 255, 255, 0) 100%
+    );
+}
+/* first crazy blend */
+.card__layer2 {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  mix-blend-mode: color-dodge;
+  clip-path: inset(0 0 1px 0 round 32px);
+  background-blend-mode: hue, hue, hard-light, overlay;
+  background: var(--pattern), var(--rainbow), var(--diagonal);
+}
+/* second crazy blend */
+.card__layer2:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--pattern), var(--rainbow), var(--diagonal), var(--shade);
+  mix-blend-mode: exclusion;
+  background-size: 75%, 200% 400%, 800%, 200%;
+  background-position: center, 0% var(--bg-y),
+    calc(var(--bg-x) * -1) calc(var(--bg-y) * -1), var(--bg-x) var(--bg-y);
+  background-blend-mode: soft-light, hue, hard-light;
 }
