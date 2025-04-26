@@ -1,41 +1,60 @@
-import ProductCard from "@/components/ProductCard"
-import StickyHelpButton from "@/components/StickyHelpButton"
-import { products } from "@/data/products"
-import Image from "next/image"
+import ProductCard from "@/components/ProductCard";
+import { productCategories } from "@/data/productCategories";
+import { products } from "@/data/products";
+import Link from "next/link";
+import { Suspense } from "react";
 
-export const metadata = {
-  title: "Products | VapeAura",
-  description: "Browse our full catalog of vapes, glass, rigs and accessories.",
+export default function ProductsPage({
+  searchParams,
+}: {
+  searchParams?: { category?: string };
+}) {
+  const active = searchParams?.category;
+  const filtered =
+    active && active !== "All"
+      ? products.filter((p) => p.category === active)
+      : products;
+
+  return (
+    <main className="mx-auto max-w-7xl px-6 py-16 space-y-12">
+      {/* FILTER BAR */}
+      <nav className="flex flex-wrap gap-3 justify-center">
+        <FilterLink label="All" active={active === undefined || active === "All"} />
+        {productCategories.map((c) => (
+          <FilterLink key={c.id} label={c.id} active={c.id === active} />
+        ))}
+      </nav>
+
+      {/* PRODUCT GRID */}
+      <Suspense fallback={<p>Loading…</p>}>
+        <section className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {filtered.map((p) => (
+            <ProductCard key={p.id} product={p} />
+          ))}
+        </section>
+      </Suspense>
+    </main>
+  );
 }
 
-export default function ProductsPage() {
+/* ------------ helpers ------------ */
+function FilterLink({
+  label,
+  active,
+}: {
+  label: string;
+  active: boolean;
+}) {
   return (
-    <main className="mx-auto max-w-7xl px-4 py-20 space-y-12">
-      <header className="text-center space-y-4">
-        <Image
-          src="/VapeAuraSymbol.png"
-          alt="VapeAura symbol"
-          width={72}
-          height={72}
-          className="mx-auto"
-        />
-        <h1 className="text-4xl md:text-5xl font-black tracking-tight">
-          Full Catalog
-        </h1>
-        <p className="max-w-2xl mx-auto">
-          Everything on this page is legal to sell nationwide without a tobacco
-          or hemp license. Need something custom? Just ask!
-        </p>
-      </header>
-
-      <section className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {products.map((p) => (
-          <ProductCard key={p.id} product={p} />
-        ))}
-      </section>
-
-      {/* sticky helper */}
-      <StickyHelpButton />
-    </main>
-  )
+    <Link
+      href={label === "All" ? "/products" : `/products?category=${encodeURIComponent(label)}`}
+      className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
+        active
+          ? "bg-amber-500 text-black"
+          : "bg-chrome/10 text-chrome-light hover:bg-chrome/20"
+      }`}
+    >
+      {label}
+    </Link>
+  );
 }
