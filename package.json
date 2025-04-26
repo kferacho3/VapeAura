@@ -36,7 +36,10 @@
     "typescript": "^5.4.3"
   },
   "overrides": {
-    "@types/react": "19.1.2",
-    "@types/react-dom": "19.1.2"
+    "rimraf": "4.4.1",
+    "glob": "^9.0.0",
+    "inflight": "1.0.6",
+    "@humanwhocodes/config-array": "0.13.0",
+    "@humanwhocodes/object-schema": "2.0.3"
   }
 }
