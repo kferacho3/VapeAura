@@ -1,6 +1,4 @@
 // src/app/products/page.tsx
-"use client";
-
 import ProductCard from "@/components/ProductCard";
 import { productCategories } from "@/data/productCategories";
 import { products } from "@/data/products";
@@ -10,12 +8,10 @@ import { Suspense } from "react";
 export default function ProductsPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Record<string, string | string[] | undefined>;
 }) {
-  const active =
-    typeof searchParams.category === "string"
-      ? searchParams.category
-      : undefined;
+  const categoryParam = searchParams.category;
+  const active = typeof categoryParam === "string" ? categoryParam : undefined;
 
   const filtered =
     active && active !== "All"
@@ -47,6 +43,7 @@ export default function ProductsPage({
   );
 }
 
+/* ------------ helpers ------------ */
 function FilterLink({
   label,
   active,
