@@ -1,20 +1,18 @@
-// src/app/products/page.tsx
 import ProductCard from "@/components/ProductCard";
 import { productCategories } from "@/data/productCategories";
 import { products } from "@/data/products";
 import Link from "next/link";
 import { Suspense } from "react";
 
-/** Props shape Next injects into a Page file */
+/** The shape Next.js 15 produces for a route’s props */
 type PageProps = {
-  /** URL query string values, e.g. /products?category=Bongs */
-  searchParams?: {
-    category?: string;
-  };
+  /** Query values arrive wrapped in a Promise in the type-gen file */
+  searchParams?: Promise<Record<string, string | undefined>>;
 };
 
-export default function ProductsPage({ searchParams }: PageProps) {
-  const active = searchParams?.category;
+export default async function ProductsPage({ searchParams }: PageProps) {
+  const params = searchParams ? await searchParams : {};
+  const active = params.category;
 
   const filtered =
     active && active !== "All"
@@ -25,10 +23,7 @@ export default function ProductsPage({ searchParams }: PageProps) {
     <main className="mx-auto max-w-7xl px-6 py-16 space-y-12">
       {/* FILTER BAR */}
       <nav className="flex flex-wrap gap-3 justify-center">
-        <FilterLink
-          label="All"
-          active={active === undefined || active === "All"}
-        />
+        <FilterLink label="All" active={!active || active === "All"} />
         {productCategories.map((c) => (
           <FilterLink key={c.id} label={c.id} active={c.id === active} />
         ))}
