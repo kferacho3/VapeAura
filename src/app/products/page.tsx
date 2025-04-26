@@ -5,13 +5,16 @@ import { products } from "@/data/products";
 import Link from "next/link";
 import { Suspense } from "react";
 
-export default function ProductsPage({
-  searchParams,
-}: {
-  searchParams: Record<string, string | string[] | undefined>;
-}) {
-  const categoryParam = searchParams.category;
-  const active = typeof categoryParam === "string" ? categoryParam : undefined;
+/** Props shape Next injects into a Page file */
+type PageProps = {
+  /** URL query string values, e.g. /products?category=Bongs */
+  searchParams?: {
+    category?: string;
+  };
+};
+
+export default function ProductsPage({ searchParams }: PageProps) {
+  const active = searchParams?.category;
 
   const filtered =
     active && active !== "All"
