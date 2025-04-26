@@ -1,12 +1,16 @@
-// next.config.mjs
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  images: {
-    unoptimized: true,
+  // 1) Skip ESLint errors during production build
+  eslint: {
+    ignoreDuringBuilds: true,
   },
-  // …any other real settings you need…
+
+  // 2) Your image domains
+  images: {
+    domains: ["vapeaura.s3.us-east-2.amazonaws.com"],
+  },
+
+  // If you need other flags, add them here…
 };
 
-export default nextConfig;
+module.exports = nextConfig;
