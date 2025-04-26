@@ -26,7 +26,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   /** Sync `<html>` class + `localStorage` */
   const apply = (next: Theme) => {
-    document.documentElement.classList.toggle("light", next === "light");
+    document.documentElement.classList.toggle("dark", next === "dark");
     window.localStorage.setItem("theme", next);
   };
 
