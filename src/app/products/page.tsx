@@ -1,3 +1,6 @@
+// src/app/products/page.tsx
+"use client";
+
 import ProductCard from "@/components/ProductCard";
 import { productCategories } from "@/data/productCategories";
 import { products } from "@/data/products";
@@ -7,9 +10,13 @@ import { Suspense } from "react";
 export default function ProductsPage({
   searchParams,
 }: {
-  searchParams?: { category?: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const active = searchParams?.category;
+  const active =
+    typeof searchParams.category === "string"
+      ? searchParams.category
+      : undefined;
+
   const filtered =
     active && active !== "All"
       ? products.filter((p) => p.category === active)
@@ -19,7 +26,10 @@ export default function ProductsPage({
     <main className="mx-auto max-w-7xl px-6 py-16 space-y-12">
       {/* FILTER BAR */}
       <nav className="flex flex-wrap gap-3 justify-center">
-        <FilterLink label="All" active={active === undefined || active === "All"} />
+        <FilterLink
+          label="All"
+          active={active === undefined || active === "All"}
+        />
         {productCategories.map((c) => (
           <FilterLink key={c.id} label={c.id} active={c.id === active} />
         ))}
@@ -37,7 +47,6 @@ export default function ProductsPage({
   );
 }
 
-/* ------------ helpers ------------ */
 function FilterLink({
   label,
   active,
@@ -47,7 +56,11 @@ function FilterLink({
 }) {
   return (
     <Link
-      href={label === "All" ? "/products" : `/products?category=${encodeURIComponent(label)}`}
+      href={
+        label === "All"
+          ? "/products"
+          : `/products?category=${encodeURIComponent(label)}`
+      }
       className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
         active
           ? "bg-amber-500 text-black"
