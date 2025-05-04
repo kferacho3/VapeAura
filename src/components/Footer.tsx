@@ -16,12 +16,12 @@ export default function Footer() {
         <div className="space-y-4">
           <Link href="/" className="inline-block">
             <Image
-              src="/VapeAuraLogo.png"
+              src="/AuraHempVapeLogo.png"
               alt="Vape Aura logo"
-              width={160}
-              height={48}
+              width={300}
+              height={150}
               priority
-              className="w-auto h-12"
+              className="w-auto h-32"
             />
           </Link>
           <p className="text-sm text-steam/80">
@@ -103,7 +103,7 @@ export default function Footer() {
       </div>
 
       <p className="mt-10 text-center text-xs text-steam/60">
-        © {new Date().getFullYear()} Vape Aura. All rights reserved.
+        © {new Date().getFullYear()} Aura • Hemp & Vapor. All rights reserved.
       </p>
     </footer>
   );

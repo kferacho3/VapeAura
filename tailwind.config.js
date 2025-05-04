@@ -8,6 +8,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        parchment: "#fcf2e5",
         steam: {
           DEFAULT: "#E0E6ED",
           faint:   "#B8C0C8",

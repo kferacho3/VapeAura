@@ -108,8 +108,8 @@
 .smoke,
 .smoke2,
 .smoke3 {
-  width: 200px;
-  height: 40px;
+  width: 100px;
+  height: 20px;
   filter: blur(4px);
   transform-origin: bottom center;
   opacity: 0;

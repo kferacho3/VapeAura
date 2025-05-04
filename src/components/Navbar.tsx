@@ -1,4 +1,3 @@
-// src/components/Navbar.tsx
 "use client";
 
 import { cn } from "@/lib/cn";
@@ -17,15 +16,16 @@ const NAV_LINKS = [
   { href: "/products", label: "Products" },
 ];
 
+const STORE_HOURS =
+  "Open 9 AM – 5 PM Mon–Fri";
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
   // ensure motion.header only appears after hydration
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  useEffect(() => setIsMounted(true), []);
 
   const MotionComp = isMounted ? motion.header : "header";
 
@@ -46,15 +46,15 @@ export default function Navbar() {
           {/* logo */}
           <Link href="/" className="flex items-center space-x-2">
             <Image
-              src="/VapeAuraLogo.png"
-              alt="Vape Aura logo"
-              width={120}
-              height={32}
+              src="/AuraHempVapeLogo.png" // placeholder – swap in final art
+              alt="Aura Hemp & Vapor logo"
+              width={70}
+              height={26}
               priority
             />
           </Link>
 
-          {/* desktop nav + centered CTAs */}
+          {/* desktop nav + CTAs */}
           <nav className="hidden md:flex grow items-center justify-center space-x-8">
             {NAV_LINKS.map(({ href, label }) => (
               <Link
@@ -75,7 +75,7 @@ export default function Navbar() {
             </Link>
 
             <Link
-              href="/request-item"
+              href="/custom-inquiry"
               className="inline-flex items-center space-x-2 rounded-md bg-steam/20 px-4 py-1.5 text-xs font-bold uppercase text-midnight border border-steam/60 hover:bg-steam hover:text-midnight hover:scale-105 transition-transform dark:bg-transparent dark:border-steam/40 dark:text-steam"
             >
               <HiOutlineClipboardList className="text-base text-brand-green" />
@@ -83,13 +83,13 @@ export default function Navbar() {
             </Link>
           </nav>
 
-          {/* utility items */}
+          {/* utility */}
           <div className="hidden md:flex items-center space-x-6">
             <a
               href="tel:+15551234567"
               className="text-sm font-semibold tracking-wide text-midnight dark:text-steam hover:text-brand-green"
             >
-              (555) 123-4567
+              (555) 123‑4567
             </a>
             <button
               onClick={toggleTheme}
@@ -100,7 +100,7 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* hamburger (mobile) */}
+          {/* hamburger */}
           <button
             onClick={() => setOpen((p) => !p)}
             aria-label="Toggle menu"
@@ -128,14 +128,18 @@ export default function Navbar() {
         </div>
       </MotionComp>
 
-      {/* Price-Match banner */}
+      {/* banner */}
       <div className="fixed top-[90px] inset-x-0 z-20 py-2 px-4 text-center bg-brand-gradient shadow-md shadow-neptune-light/30">
-        <p className="text-white font-bold uppercase text-sm tracking-wide">
-          PRICE-MATCH GUARANTEE | CALL +1 (555) 123-4567 | EMAIL INFO@VAPEAURA.COM
+        <p className="text-white font-bold uppercase text-sm tracking-wide space-x-4">
+          <span>{STORE_HOURS}</span>
+          <span>|</span>
+          <span>Orders after Fri 4 PM ship Mon</span>
+          <span>|</span>
+          <span>Email support@vapeaura.shop</span>
         </p>
       </div>
 
-      {/* sidebar for mobile */}
+      {/* sidebar */}
       <AnimatePresence>
         {open && <Sidebar close={() => setOpen(false)} links={NAV_LINKS} />}
       </AnimatePresence>
