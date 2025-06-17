@@ -1,11 +1,11 @@
 "use client";
 
 import {
-    createContext,
-    ReactNode,
-    useContext,
-    useEffect,
-    useState,
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
 } from "react";
 
 type Theme = "light" | "dark";
@@ -26,7 +26,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   /** Sync `<html>` class + `localStorage` */
   const apply = (next: Theme) => {
-    document.documentElement.classList.toggle("dark", next === "dark");
+    document.documentElement.classList.toggle("light", next === "light");
     window.localStorage.setItem("theme", next);
   };
 

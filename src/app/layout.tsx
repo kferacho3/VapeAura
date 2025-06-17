@@ -4,6 +4,8 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import type { Metadata } from "next";
+import SmokeBackground from "./smokebackground";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -27,6 +29,7 @@ export default function RootLayout({
         `}
       >
         <ThemeProvider>
+            <SmokeBackground />
           <AgeGate>
             {/* fires right after the age check */}
             <EmailCaptureModal />

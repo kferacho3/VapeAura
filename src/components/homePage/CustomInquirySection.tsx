@@ -1,150 +1,203 @@
+/* ------------------------------------------------------------------
+ *  CustomInquirySection – wider / shorter variant
+ * ----------------------------------------------------------------- */
 "use client";
 
+import { motion, Variants } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
-import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
+import React from "react";
+import { FiUpload } from "react-icons/fi";
 import { MdSearchOff } from "react-icons/md";
 
-type Topic = "custom" | "support";
+/* —————— Form elements —————— */
+const FormInput = (props: React.ComponentPropsWithoutRef<"input">) => (
+  <input
+    {...props}
+    className="
+      w-full rounded-md p-3 text-base outline-none
+      ring-1 ring-slate-300
+      focus:ring-2 focus:ring-brand-green
+      bg-white text-slate-800
+      dark:bg-slate-800 dark:text-slate-100 dark:ring-slate-600
+    "
+  />
+);
 
-export default function CustomInquirySection() {
-  const [topic, setTopic] = useState<Topic>("custom");
+const FormTextarea = (props: React.ComponentPropsWithoutRef<"textarea">) => (
+  <textarea
+    {...props}
+    className="
+      w-full rounded-md p-3 text-base outline-none resize-none
+      ring-1 ring-slate-300
+      focus:ring-2 focus:ring-brand-green
+      bg-white text-slate-800
+      dark:bg-slate-800 dark:text-slate-100 dark:ring-slate-600
+    "
+  />
+);
 
-  return (
-    <section
-      id="custom-inquiry"
+const FormFileInput = (
+  props: React.ComponentPropsWithoutRef<"input"> & { id: string }
+) => (
+  <div className="relative">
+    <label
+      htmlFor={props.id}
       className="
-        mx-auto my-16 w-full max-w-7xl
-        overflow-hidden rounded-3xl shadow-xl
-        p-[3px] bg-[radial-gradient(circle_at_left,_#01cc70,_#004448)]
+        flex w-full cursor-pointer items-center justify-center gap-2
+        rounded-md border border-dashed border-slate-400 p-3
+        text-slate-600 transition-colors
+        hover:border-brand-green hover:text-brand-green
+        dark:border-slate-600 dark:text-slate-300
+        dark:hover:text-white
       "
     >
-      {/* inner wrapper */}
-      <div className="flex flex-col lg:flex-row h-full bg-white/90 dark:bg-midnight/90 rounded-3xl">
-        {/* ── Left column: hero image + quick CTA ─────────────────────── */}
-        <div className="relative w-full lg:w-1/2 aspect-[4/3] lg:aspect-square order-1 lg:order-1">
-          <Image
-            src="https://vapeaura.s3.us-east-2.amazonaws.com/home/sections/VapeAuraCustomInquiry.webp"
-            alt="Custom product sourcing"
-            fill
-            className="object-cover object-center rounded-t-3xl lg:rounded-l-3xl lg:rounded-tr-none"
-            priority
-          />
+      <FiUpload />
+      <span>Upload Reference File</span>
+    </label>
+    <input
+      {...props}
+      type="file"
+      className="absolute -z-10 h-px w-px opacity-0"
+    />
+  </div>
+);
 
-          {/* overlay CTA */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm text-steam p-6 space-y-6">
-            <MdSearchOff size={56} className="text-amber-400" />
-            <h3 className="text-center text-3xl md:text-5xl font-extrabold">
-              DON’T SEE WHAT YOU NEED?
-            </h3>
-            <Link
-              href="#contact-form"
-              className="rounded-lg bg-amber-400 px-8 py-4 text-black font-semibold hover:bg-amber-300 transition"
+interface CustomInquirySectionProps {
+  environmentMode?: "day" | "night";
+}
+
+export default function CustomInquirySection({
+  environmentMode = "night",
+}: CustomInquirySectionProps) {
+  const isNight = environmentMode === "night";
+
+  const containerVariants: Variants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+  };
+
+  return (
+    <section id="custom-inquiry" className="relative isolate my-20 lg:my-24">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        className={`
+          container group relative mx-auto max-w-7xl overflow-hidden
+          rounded-3xl border shadow-xl
+          ${isNight
+            ? "bg-slate-900 border-slate-700 shadow-brand-green/20"
+            : "bg-white border-slate-200 shadow-black/5"}
+        `}
+      >
+        {/* animated conic accent */}
+        <div
+          className="
+            pointer-events-none absolute -inset-0.5 -z-10 rounded-[inherit]
+            bg-[conic-gradient(from_270deg_at_50%_50%,#01cc70_0%,transparent_30%,transparent_70%,#01cc70_100%)]
+            opacity-0 transition-opacity duration-500
+            group-hover:opacity-100 group-hover:animate-spin-slow
+          "
+        />
+
+        <div className="grid md:grid-cols-2 h-full">
+          {/* ---------- Image ---------- */}
+          <div className="relative w-full min-h-[420px] md:min-h-full overflow-hidden">
+            <div
+              className="
+                absolute inset-0 pointer-events-none
+                bg-gradient-to-t md:bg-gradient-to-l
+                from-black/40 via-transparent to-transparent
+              "
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 1.1 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="h-full w-full"
             >
-              SEND A&nbsp;CUSTOM&nbsp;REQUEST
-            </Link>
+              <Image
+                src="https://vapeaura.s3.us-east-2.amazonaws.com/home/background/VapeAura3.webp"
+                alt="Stylized vaping lifestyle imagery"
+                fill
+                priority
+                className="object-cover object-bottom"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </motion.div>
           </div>
-        </div>
 
-        {/* ── Right column: enquiry / support form ───────────────────── */}
-        <div className="w-full lg:w-1/2 order-2 lg:order-2 p-8 sm:p-12 space-y-8 text-midnight dark:text-steam">
-          <header className="space-y-3">
-            <h2 className="text-4xl md:text-6xl font-extrabold text-amber-400 uppercase">
-              {topic === "custom" ? "Custom Order" : "Customer Support"}
+          {/* ---------- Form ---------- */}
+          <div className="order-2 flex flex-col gap-6 px-4 sm:px-6 lg:px-12 py-6 sm:py-8">
+            <div className="text-brand-green">
+              <MdSearchOff size={46} />
+            </div>
+            <h2
+              className={`text-4xl lg:text-5xl font-extrabold leading-tight ${
+                isNight ? "text-slate-100" : "text-slate-900"
+              }`}
+            >
+              Can&rsquo;t&nbsp;Find&nbsp;It?<br />
+              We&rsquo;ll&nbsp;
+              <span className="text-brand-green">Source&nbsp;It.</span>
             </h2>
-          </header>
-
-          {/* topic dropdown */}
-          <div className="flex items-center gap-3">
-            <label htmlFor="topic" className="font-semibold">
-              Topic&nbsp;:
-            </label>
-            <select
-              id="topic"
-              value={topic}
-              onChange={(e) => setTopic(e.target.value as Topic)}
-              className="rounded-md border border-steam/60 bg-transparent px-3 py-1.5"
+            <p
+              className={`max-w-md ${
+                isNight ? "text-slate-300" : "text-slate-600"
+              }`}
             >
-              <option value="custom">Custom Order</option>
-              <option value="support">Support Question</option>
-            </select>
+              Hunting for a specific brand, model, or color? Provide the
+              details&mdash;our specialists will handle the rest.
+            </p>
+
+            <form
+              action="https://formspree.io/f/your-id"
+              method="POST"
+              encType="multipart/form-data"
+              className="space-y-5"
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <FormInput name="name" placeholder="Your Name" required />
+                <FormInput
+                  name="email"
+                  type="email"
+                  placeholder="Your Email"
+                  required
+                />
+              </div>
+              <FormTextarea
+                name="message"
+                rows={4}
+                required
+                placeholder="Describe the item you're looking for..."
+              />
+              <FormFileInput
+                id="ref-file"
+                name="attachment"
+                accept="image/*,.pdf"
+              />
+              <button
+                type="submit"
+                className="
+                  w-full rounded-full py-3 font-bold transition-all
+                  bg-brand-green text-midnight
+                  shadow-lg shadow-brand-green/30
+                  hover:brightness-110 hover:shadow-brand-green/50
+                  focus:outline-none focus:ring-2 focus:ring-brand-green
+                "
+              >
+                Submit Inquiry
+              </button>
+            </form>
           </div>
-
-          {/* contact form */}
-          <form
-            id="contact-form"
-            action="https://formspree.io/f/your-id" /* replace */
-            method="POST"
-            className="space-y-4"
-          >
-            <input type="hidden" name="topic" value={topic} />
-            <input
-              name="name"
-              required
-              placeholder="Full name"
-              className="w-full rounded-lg border p-3"
-            />
-            <input
-              name="email"
-              type="email"
-              required
-              placeholder="Email address"
-              className="w-full rounded-lg border p-3"
-            />
-            <input
-              name="phone"
-              placeholder="Phone (optional)"
-              className="w-full rounded-lg border p-3"
-            />
-            <textarea
-              name="message"
-              required
-              rows={5}
-              placeholder={
-                topic === "custom"
-                  ? "Tell us exactly what you’d like (brand, color, budget…)"
-                  : "How can we help?"
-              }
-              className="w-full rounded-lg border p-3"
-            />
-            <button
-              type="submit"
-              className="w-full rounded-lg bg-brand-green py-3 font-bold text-midnight hover:brightness-110 transition"
-            >
-              Send&nbsp;Message
-            </button>
-          </form>
-
-          {/* social links */}
-          <ul className="flex items-center gap-6 pt-3">
-            <a
-              href="https://facebook.com/vapeaura"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-brand-green"
-            >
-              <FaFacebook size={28} />
-            </a>
-            <a
-              href="https://instagram.com/vapeaura"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-brand-green"
-            >
-              <FaInstagram size={28} />
-            </a>
-            <a
-              href="https://twitter.com/vapeaura"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-brand-green"
-            >
-              <FaTwitter size={28} />
-            </a>
-          </ul>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
